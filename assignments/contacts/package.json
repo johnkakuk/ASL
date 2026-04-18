@@ -11,10 +11,13 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "jest": "^30.2.0",
+    "axios": "^1.15.0",
+    "jest": "^30.3.0",
+    "node-libcurl": "^4.1.0",
     "nodemon": "^3.1.11"
   },
   "dependencies": {
+    "@jworkman-fs/asl": "^1.2.43",
     "cors": "^2.8.6",
     "express": "^4.22.1"
   }

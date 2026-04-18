@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// localhost:3000/
+// localhost:8080/
 app.get('/', (req, res) => {
     res.status(200).json({
         message: 'GET - root',
