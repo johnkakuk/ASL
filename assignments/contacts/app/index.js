@@ -18,5 +18,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/contacts', require('./routes/contactRouter'));
+app.use('/v1/contacts', require('./routes/contactRouter'));
 
 module.exports = app;

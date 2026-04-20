@@ -22,5 +22,6 @@ router.delete('/:id', deleteContact);
 
 // PATCH by ID
 router.patch('/:id', updateContact);
+router.put('/:id', updateContact);
 
 module.exports = router;

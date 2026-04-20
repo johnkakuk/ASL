@@ -1,106 +1,108 @@
-const messages = require('../messages/messages');
+const {
+    ContactModel,
+    filterContacts,
+    sortContacts,
+    Pager,
+} = require('@jworkman-fs/asl');
 
-const contacts = [];
-let nextId = 1;
+// Basic positive number validation
+const validatePositive = (value) => Number.isInteger(value) && value > 0;
 
-const responseMetadata = (req) => ({
-    hostname: req.hostname,
-    method: req.method,
-});
 
+const applyListModifiers = (req) => {
+    // Get parameters from query
+    const {
+        page,
+        limit,
+        sort,
+        direction = 'asc',
+    } = req.query;
+
+    // Get filter specifications from headers 
+    const filterBy = req.get('X-Filter-By');
+    const filterOperator = req.get('X-Filter-Operator');
+    const filterValue = req.get('X-Filter-Value');
+
+    let results = ContactModel.index();
+
+    if (filterBy && filterOperator && typeof filterValue !== 'undefined') {
+        results = filterContacts(filterBy, filterOperator, filterValue, results);
+    }
+
+    if (sort) {
+        results = sortContacts([...results], sort, direction);
+    }
+
+    const pager = new Pager(results, page, limit);
+    return pager.results();
+};
+
+// Return error message, or fall back to generic 500
+const handleError = (res, error) => {
+    if (error && typeof error.statusCode === 'number') {
+        return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: error.message || 'Internal server error.' });
+};
+
+// CRUD methods (mostly copied and pasted from previous classes)
 const getAllContacts = (req, res) => {
     try {
-        return res.status(200).json({
-            message: messages.get_all_contacts,
-            metadata: {
-                ...responseMetadata(req),
-                total: contacts.length,
-            },
-            result: contacts,
-        });
+        const results = applyListModifiers(req);
+        return res.status(200).json(results);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return handleError(res, error);
     }
 };
 
 const getContactById = (req, res) => {
     try {
         const id = Number.parseInt(req.params.id, 10);
-        const contact = contacts.find((item) => item.id === id);
-        if (!contact) {
-            return res.status(404).json({ message: messages.contact_not_found });
+        if (!validatePositive(id)) {
+            return res.status(400).json({ message: 'Invalid contact id.' });
         }
 
-        return res.status(200).json({
-            message: messages.get_contact_by_id(id),
-            metadata: responseMetadata(req),
-            result: contact,
-        });
+        const contact = ContactModel.show(id);
+        return res.status(200).json(contact);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return handleError(res, error);
     }
 };
 
 const createContact = (req, res) => {
     try {
-        const contact = {
-            id: nextId++,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            phone: req.body.phone,
-            birthday: req.body.birthday,
-        };
-        contacts.push(contact);
-
-        return res.status(201).json({
-            message: messages.create_contact,
-            metadata: responseMetadata(req),
-            result: contact,
-        });
+        const contact = ContactModel.create(req.body);
+        return res.redirect(303, `/v1/contacts/${contact.id}`);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return handleError(res, error);
     }
 };
 
 const updateContact = (req, res) => {
     try {
         const id = Number.parseInt(req.params.id, 10);
-        const index = contacts.findIndex((item) => item.id === id);
-        if (index === -1) {
-            return res.status(404).json({ message: messages.contact_not_found });
+        if (!validatePositive(id)) {
+            return res.status(400).json({ message: 'Invalid contact id.' });
         }
 
-        const current = contacts[index];
-        const updated = { ...current, ...req.body, id: current.id };
-        contacts[index] = updated;
-
-        return res.status(200).json({
-            message: messages.update_contact_by_id(id),
-            metadata: responseMetadata(req),
-            result: updated,
-        });
+        ContactModel.update(id, req.body);
+        return res.redirect(303, `/v1/contacts/${id}`);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return handleError(res, error);
     }
 };
 
 const deleteContact = (req, res) => {
     try {
         const id = Number.parseInt(req.params.id, 10);
-        const index = contacts.findIndex((item) => item.id === id);
-        if (index === -1) {
-            return res.status(404).json({ message: messages.contact_not_found });
+        if (!validatePositive(id)) {
+            return res.status(400).json({ message: 'Invalid contact id.' });
         }
-        const [deleted] = contacts.splice(index, 1);
 
-        return res.status(200).json({
-            message: messages.delete_contact_by_id(id),
-            metadata: responseMetadata(req),
-            result: messages.resource_deleted(`${deleted.firstName} ${deleted.lastName}`),
-        });
+        ContactModel.remove(id);
+        return res.redirect(303, '/v1/contacts');
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return handleError(res, error);
     }
 };
 
