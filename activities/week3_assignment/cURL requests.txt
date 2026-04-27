@@ -10,61 +10,53 @@ curl -X POST http://localhost:3000/galaxies \
 
 curl -X POST http://localhost:3000/stars \
     -H "Content-Type: application/json" \
-    --data '{"starName":"Star A","starSize":4001,"starDescription":"Demo star A in Galaxy 4","GalaxyId":4}'
+    --data '{"starName":"Star A","starSize":4001,"starDescription":"Demo star A in Galaxy 4","GalaxyId":6}'
 
 curl -X POST http://localhost:3000/planets \
     -H "Content-Type: application/json" \
-    --data '{"planetName":"Planet A-1","planetSize":401,"planetDescription":"Demo planet A-1 for Star A in Galaxy 4","StarId":10}'
+    --data '{"planetName":"Planet A-1","planetSize":401,"planetDescription":"Demo planet A-1 for Star A in Galaxy 4","StarId":11}'
 
 
 
 --------------------
-GALAXY
+READ
 --------------------
 
-Read
-curl http://localhost:3000/galaxies/4
+curl http://localhost:3000/galaxies/6
+curl http://localhost:3000/stars/11
+curl http://localhost:3000/planets/29
 
-Update
-curl -X PUT http://localhost:3000/galaxies/4 \
+
+
+
+
+
+--------------------
+UPDATE
+--------------------
+
+curl -X PUT http://localhost:3000/galaxies/6 \
     -H "Content-Type: application/json" \
-    --data '{"galaxyName":"Galaxy 4-1","galaxySize":400000,"galaxyDescription":"Demo galaxy 4"}'
+    --data '{"id":"4","galaxyName":"Galaxy 4-1","galaxySize":400000,"galaxyDescription":"Demo galaxy 4"}'
+
+curl -X PUT http://localhost:3000/stars/11 \
+    -H "Content-Type: application/json" \
+    --data '{"starName":"Star A-1","starSize":4001,"starDescription":"Demo star A in Galaxy 4","GalaxyId":6}'
+
+curl -X PUT http://localhost:3000/planets/29 \
+    -H "Content-Type: application/json" \
+    --data '{"planetName":"Planet A-1-1","planetSize":401,"planetDescription":"Demo planet A-1 for Star A in Galaxy 4","StarId":11}'
+
+
+
+
+
+
+--------------------
+DELETE
+--------------------
 
 Delete
-curl -X DELETE http://localhost:3000/galaxies/4
-
-
-
-
---------------------
-STAR
---------------------
-
-Read
-curl http://localhost:3000/stars/10
-
-Update
-curl -X PUT http://localhost:3000/stars/10 \
-    -H "Content-Type: application/json" \
-    --data '{"starName":"Star A-1","starSize":4001,"starDescription":"Demo star A in Galaxy 4","GalaxyId":4}'
-
-Delete
-curl -X DELETE http://localhost:3000/stars/10
-
-
-
-
---------------------
-PLANET
---------------------
-
-Read
-curl http://localhost:3000/planets/28
-
-Update
-curl -X PUT http://localhost:3000/planets/28 \
-    -H "Content-Type: application/json" \
-    --data '{"planetName":"Planet A-1-1","planetSize":401,"planetDescription":"Demo planet A-1 for Star A in Galaxy 4","StarId":10}'
-
-Delete
-curl -X DELETE http://localhost:3000/planets/28
+curl -X DELETE http://localhost:3000/planets/29
+curl -X DELETE http://localhost:3000/stars/11
+curl -X DELETE http://localhost:3000/galaxies/6
