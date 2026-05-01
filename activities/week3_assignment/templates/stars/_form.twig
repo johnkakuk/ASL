@@ -1,0 +1,74 @@
+{% if star is defined %}
+    <form
+    enctype="multipart/form-data"
+    action="/stars/{{ star.id }}"
+    method="POST">
+        <input type="hidden" name="id" value="{{ star.id }}" />
+{% else %}
+    <form enctype="multipart/form-data" action="/stars" method="POST">
+{% endif %}
+
+    <div class="control">
+        <label>Name:</label>
+        <input
+            type="text"
+            name="starName"
+            {% if star is defined %}
+                value="{{ star.starName }}"
+            {% endif %}
+        />
+    </div>
+
+    <div class="control">
+        <label>Size:</label>
+        <input
+            type="number"
+            name="starSize"
+            {% if star is defined %}
+                value="{{ star.starSize }}"
+            {% endif %}
+        />
+    </div>
+
+    <div class="control">
+        <label>Description:</label>
+        <textarea
+            name="starDescription"
+            rows="4"
+        >
+            {{ star.starDescription }}
+        </textarea>
+    </div>
+
+    <div class="control">
+        <label>Galaxy Id:</label>
+        <select
+            name="GalaxyId"
+            id="galaxyId">
+            {% for galaxy in galaxies %}
+                <option
+                    {% if star.GalaxyId == galaxy.id %}
+                        selected
+                    {% endif %}
+                    value="{{ galaxy.id }}">
+                        {{ galaxy.galaxyName }}
+                </option>
+            {% endfor %}
+        </select>        
+    </div>
+
+    <div class="control">
+        <label>Image:</label>
+        <input type="file" name="image" id="image" />
+    </div>
+
+    <button type="submit">
+        {% if star is defined %}
+            Update Star
+        {% else %}
+            Add Star
+        {% endif %}
+    </button>
+    <br>
+    <a href="/stars">&lt;&lt; Back to Stars</a>
+</form>

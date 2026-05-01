@@ -1,0 +1,17 @@
+{% extends 'layouts/_default.twig' %}
+
+{% block main_content %}
+    {% if galaxy.galaxyImageURL %}
+        <img class="main-img" alt="{{ galaxy.galaxyName }}" src="{{ galaxy.galaxyImageURL }}">
+    {% endif %}
+    <h1>{{ galaxy.galaxyName }}</h1>
+    <p>
+        <strong>Size: </strong>{{ galaxy.galaxySize }} light years
+        <br>
+        {{ galaxy.galaxyDescription }}
+    </p>
+
+    <a href="/galaxies/{{ galaxy.id }}/edit">Edit Galaxy</a><br>
+    <a href="/galaxies/{{ galaxy.id }}/delete">Delete Galaxy</a><br>
+    <a href="/galaxies">&lt;&lt;Back</a>
+{% endblock %}

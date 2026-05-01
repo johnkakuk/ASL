@@ -1,0 +1,11 @@
+{% extends 'layouts/_default.twig' %}
+
+{% block pageName %}Edit {{ galaxy.galaxyName }}{% endblock %}
+
+{% block main_content %}
+    {% if galaxy.galaxyImageURL %}
+        <img class="main-img" alt="{{ galaxy.galaxyName }}" src="{{ galaxy.galaxyImageURL }}">
+    {% endif %}
+    <h1>Edit {{ galaxy.galaxyName }}</h1>
+    {% include 'galaxies/_form.twig' with { "galaxy": galaxy } %}
+{% endblock %}

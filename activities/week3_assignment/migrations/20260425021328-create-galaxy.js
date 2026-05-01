@@ -19,6 +19,9 @@ module.exports = {
       },
       galaxyDescription: {
         type: Sequelize.TEXT
+      },
+      galaxyImageURL: {
+        type: Sequelize.TEXT
       }
     });
   },

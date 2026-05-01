@@ -32,6 +32,9 @@ module.exports = (sequelize, DataTypes) => {
             starDescription: {
                 type: DataTypes.TEXT,
             },
+            starImageURL: {
+                type: DataTypes.TEXT,
+            },
         },
         {
             // Other model options

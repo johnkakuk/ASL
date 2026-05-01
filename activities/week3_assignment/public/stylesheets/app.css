@@ -1,0 +1,12 @@
+html {
+    background: #2f2f2f;
+    color: #fff;
+}
+
+html a {
+    color: #fff;
+}
+
+.main-img {
+    max-width: 300px;
+}

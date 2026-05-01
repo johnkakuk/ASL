@@ -1,0 +1,21 @@
+{% extends 'layouts/_default.twig' %}
+
+{% block pageName %}
+View all galaxies
+{% endblock %}
+
+{% block main_content %}
+    <H1>All galaxies:</h1>
+    <ul>
+        {% for galaxy in galaxies %}
+            <li>{{ galaxy.galaxyName }} -
+                <a href="/galaxies/{{ galaxy.id }}">View</a> |
+                <a href="/galaxies/{{ galaxy.id }}/edit">Edit</a> |
+                <a href="/galaxies/{{ galaxy.id }}/delete">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="/galaxies/new">Add New Galaxy</a><br>
+    <a href="/">&lt;&lt; Back</a>
+{% endblock %}

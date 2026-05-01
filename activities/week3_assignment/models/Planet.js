@@ -32,6 +32,9 @@ module.exports = (sequelize, DataTypes) => {
             planetDescription: {
                 type: DataTypes.TEXT,
             },
+            planetImageURL: {
+                type: DataTypes.TEXT,
+            },
         },
         {
             // Other model options

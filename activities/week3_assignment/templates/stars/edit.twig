@@ -1,0 +1,11 @@
+{% extends 'layouts/_default.twig' %}
+
+{% block pageName %}Edit {{ star.starName }}{% endblock %}
+
+{% block main_content %}
+    {% if star.starImageURL %}
+        <img class="main-img" alt="{{ star.starName }}" src="{{ star.starImageURL }}">
+    {% endif %}
+    <h1>Edit {{ star.starName }}</h1>
+    {% include 'stars/_form.twig' with { "star": star } %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'layouts/_default.twig' %}
+
+{% block pageName %}Edit {{ planet.planetName }}{% endblock %}
+
+{% block main_content %}
+    {% if planet.planetImageURL %}
+        <img class="main-img" alt="{{ planet.planetName }}" src="{{ planet.planetImageURL }}">
+    {% endif %}
+    <h1>Edit {{ planet.planetName }}</h1>
+    {% include 'planets/_form.twig' with { "planet": planet } %}
+{% endblock %}

@@ -1,0 +1,61 @@
+{% if galaxy is defined %}
+    <form
+    enctype="multipart/form-data" 
+    action="/galaxies/{{ galaxy.id }}" 
+    method="POST">    
+        <input type="hidden" name="id" value="{{ galaxy.id }}" />
+{% else %}
+    <form enctype="multipart/form-data" action="/galaxies" method="POST">
+{% endif %}
+
+    {% if image is defined and image.id is defined %}
+        <input type="hidden" name="imageId" value="{{ image.id }}">
+    {% endif %}
+
+    <div class="control">
+        <label>Name:</label>
+        <input
+            type="text" 
+            name="galaxyName"
+            {% if galaxy is defined %}
+                value="{{ galaxy.galaxyName }}"
+            {% endif %}
+        />
+    </div>
+
+    <div class="control">
+        <label>Size:</label>
+        <input
+            type="number" 
+            name="galaxySize"
+            {% if galaxy is defined %}
+                value="{{ galaxy.galaxySize }}"
+            {% endif %}
+        />
+    </div>
+
+    <div class="control">
+        <label>Description:</label>
+        <textarea
+            name="galaxyDescription"
+            rows="4"
+        >
+            {{ galaxy.galaxyDescription }}
+        </textarea>
+    </div>
+
+    <div class="control">
+        <label>Image:</label>
+        <input type="file" name="image" id="image" />
+    </div>
+
+    <button type="submit">
+        {% if galaxy is defined %}
+            Update Galaxy
+        {% else %}
+            Add Galaxy
+        {% endif %}
+    </button>
+
+
+</form>

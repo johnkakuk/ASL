@@ -1,0 +1,17 @@
+{% extends 'layouts/_default.twig' %}
+
+{% block main_content %}
+    {% if planet.planetImageURL %}
+        <img class="main-img" alt="{{ planet.planetName }}" src="{{ planet.planetImageURL }}">
+    {% endif %}
+    <h1>{{ planet.planetName }}</h1>
+    <p>
+        <strong>Size: </strong>{{ planet.planetSize }} light years
+        <br>
+        {{ planet.planetDescription }}
+    </p>
+
+    <a href="/planets/{{ planet.id }}/edit">Edit Planet</a><br>
+    <a href="/planets/{{ planet.id }}/delete">Delete Planet</a><br>
+    <a href="/planets">&lt;&lt;Back</a>
+{% endblock %}

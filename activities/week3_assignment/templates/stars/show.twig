@@ -1,0 +1,19 @@
+{% extends 'layouts/_default.twig' %}
+
+{% block main_content %}
+    {% if star.starImageURL %}
+        <img class="main-img" alt="{{ star.starName }}" src="{{ star.starImageURL }}">
+    {% endif %}
+    <h1>{{ star.starName }}</h1>
+    <p>
+        <strong>Size: </strong>{{ star.starSize }} light years
+        <br>
+        <strong>Parent galaxy: </strong>{{ galaxy.galaxyName }}
+        <br>
+        {{ star.starDescription }}
+    </p>
+
+    <a href="/stars/{{ star.id }}/edit">Edit Star</a><br>
+    <a href="/stars/{{ star.id }}/delete">Delete Star</a><br>
+    <a href="/stars">&lt;&lt;Back</a>
+{% endblock %}

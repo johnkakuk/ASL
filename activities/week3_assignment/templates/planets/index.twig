@@ -1,0 +1,21 @@
+{% extends 'layouts/_default.twig' %}
+
+{% block pageName %}
+View all planets
+{% endblock %}
+
+{% block main_content %}
+    <h1>All planets:</h1>
+    <ul>
+        {% for planet in planets %}
+            <li>{{ planet.planetName }} -
+                <a href="/planets/{{ planet.id }}">View</a> |
+                <a href="/planets/{{ planet.id }}/edit">Edit</a> |
+                <a href="/planets/{{ planet.id }}/delete">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="/planets/new">Add New Planet</a><br>
+    <a href="/">&lt;&lt; Back</a>
+{% endblock %}
