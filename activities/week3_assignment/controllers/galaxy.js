@@ -1,4 +1,4 @@
-const { Galaxy } = require('../models')
+const { Galaxy, Star } = require('../models')
 
 // Show all resources
 const index = async (req, res) => {
@@ -26,6 +26,7 @@ const show = async (req, res) => {
     try {
         const contentType = req.get(`Content-Type`) || ''
         const galaxy = await Galaxy.findByPk(req.params.id)
+        const stars = await Star.findAll({ where: { GalaxyId: req.params.id } })
 
         if (!galaxy) return res.status(404).json({ error: 'Galaxy not found' })
 
@@ -36,7 +37,7 @@ const show = async (req, res) => {
 
         res
             .status(200)
-            .render('galaxies/show.twig', { galaxy })
+            .render('galaxies/show.twig', { galaxy, stars })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }

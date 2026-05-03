@@ -6,14 +6,26 @@
     {% endif %}
     <h1>{{ star.starName }}</h1>
     <p>
-        <strong>Size: </strong>{{ star.starSize }} light years
+        <strong>Size: </strong>{{ star.starSize }} solar masses
         <br>
         <strong>Parent galaxy: </strong>{{ galaxy.galaxyName }}
         <br>
         {{ star.starDescription }}
     </p>
 
+    <h2>Planets orbiting {{ star.starName }}</h2>
+    {% if planets|length > 0 %}
+        <ul>
+            {% for planet in planets %}
+                <li><a href="/planets/{{ planet.id }}">{{ planet.planetName }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No planets orbiting this star yet. Check back in a few million years.</p>
+    {% endif %}
+    <a class="add-new-link" href="/planets/new">Add new planet +</a><br>
+
     <a href="/stars/{{ star.id }}/edit">Edit Star</a><br>
     <a href="/stars/{{ star.id }}/delete">Delete Star</a><br>
-    <a href="/stars">&lt;&lt;Back</a>
+    <a href="/stars">&lt;&lt; Back to all stars</a>
 {% endblock %}

@@ -6,12 +6,36 @@
     {% endif %}
     <h1>{{ planet.planetName }}</h1>
     <p>
-        <strong>Size: </strong>{{ planet.planetSize }} light years
+        <strong>Diameter: </strong>{{ planet.planetSize }} kilometers
+        <br>
+        {% if parentGalaxies|length == 1 %}
+            <strong>Parent galaxy: </strong><a href="/galaxies/{{ parentGalaxies[0].id }}">{{ parentGalaxies[0].galaxyName }}</a>
+            <br>
+        {% elseif parentGalaxies|length > 1 %}
+            <strong>Parent galaxies: </strong>
+            {% for galaxy in parentGalaxies %}
+                <a href="/galaxies/{{ galaxy.id }}">{{ galaxy.galaxyName }}</a>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+            <br>
+        {% endif %}
+
+        {% if parentStars|length == 1 %}
+            <strong>Parent star: </strong>
+        {% else %}
+            <strong>Parent stars: </strong>
+        {% endif %}
+        {% if parentStars|length > 0 %}
+            {% for star in parentStars %}
+                <a href="/stars/{{ star.id }}">{{ star.starName }}</a>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        {% else %}
+            None linked
+        {% endif %}
         <br>
         {{ planet.planetDescription }}
     </p>
 
     <a href="/planets/{{ planet.id }}/edit">Edit Planet</a><br>
     <a href="/planets/{{ planet.id }}/delete">Delete Planet</a><br>
-    <a href="/planets">&lt;&lt;Back</a>
+    <a href="/planets">&lt;&lt; Back to all planets</a>
 {% endblock %}

@@ -13,6 +13,7 @@
         <input
             type="text"
             name="planetName"
+            required
             {% if planet is defined %}
                 value="{{ planet.planetName }}"
             {% endif %}
@@ -24,6 +25,9 @@
         <input
             type="number"
             name="planetSize"
+            min="1"
+            step="1"
+            required
             {% if planet is defined %}
                 value="{{ planet.planetSize }}"
             {% endif %}
@@ -35,17 +39,16 @@
         <textarea
             name="planetDescription"
             rows="4"
-        >
-            {{ planet.planetDescription }}
-        </textarea>
+        >{{ planet.planetDescription }}</textarea>
     </div>
 
     <div class="control">
         <label>Galaxy:</label>
         <select
             name="GalaxyId"
-            id="galaxyId">
-            <option disabled {% if selectedGalaxyId is not defined %}selected{% endif %}>Select a Parent Galaxy</option>
+            id="galaxyId"
+            required>
+            <option value="" disabled {% if selectedGalaxyId is not defined %}selected{% endif %}>Select a Parent Galaxy</option>
             <option disabled>---</option>
             {% for galaxy in galaxies %}
                 <option
@@ -60,16 +63,17 @@
     </div>
 
     <div class="control">
-        <label>Star:</label>
+        <label>Stars (hold CMD/CTRL for multi-select):</label>
         <select
-            name="StarId"
+            name="StarIds"
             id="starId"
+            multiple
+            size="7"
+            required
             disabled>
-            <option disabled selected>Select a Parent Star</option>
-            <option disabled>---</option>
             {% for star in stars %}
                 <option
-                    {% if planet.StarId == star.id %}
+                    {% if selectedStarIds is defined and star.id in selectedStarIds %}
                         selected
                     {% endif %}
                     value="{{ star.id }}">
@@ -81,7 +85,7 @@
 
     <div class="control">
         <label>Image:</label>
-        <input type="file" name="image" id="image" />
+        <input type="file" name="image" id="image" accept="image/*" />
     </div>
 
     <button type="submit">
@@ -97,42 +101,36 @@
 <script>
     const galaxyDropdown = document.querySelector('#galaxyId')
     const starDropdown = document.querySelector('#starId')
-    const planet = {{ planet is defined ? planet|json_encode|raw : 'null' }};
-    const galaxies = {{ galaxies is defined ? galaxies|json_encode|raw : 'null'}}
-    const stars = {{ stars is defined ? stars|json_encode|raw : 'null'}}
-
-    console.log(galaxies)
-    console.log(stars)
-
-    if(planet != null) starDropdown.disabled = false
+    const selectedStarIds = {{ selectedStarIds is defined ? selectedStarIds|json_encode|raw : '[]' }}
+    const stars = {{ stars is defined ? stars|json_encode|raw : '[]' }}
 
     galaxyDropdown.addEventListener('change', handleChangeGalaxy)
 
     function handleChangeGalaxy(e) {
         if(e.target == galaxyDropdown) {
-            starDropdown.disabled = false
-            repopulateStars()
+            repopulateStars([])
         }
     }
 
-    function repopulateStars() {
-        starDropdown.innerHTML = "<option disabled selected>Select a Parent Star</option><option disabled>---</option>"
+    // AI assisted: rebuild star options from selected galaxy and apply multi-selections.
+    function repopulateStars(idsToSelect) {
+        starDropdown.innerHTML = ""
         const matchingStars = []
         stars.forEach(star => {
             if(star.dataValues.GalaxyId == galaxyDropdown.value) {
                 matchingStars.push(star.dataValues)
             }
         })
-        if(matchingStars.length == 0) starDropdown.disabled = true
+        starDropdown.disabled = matchingStars.length == 0
         
         matchingStars.forEach(star => {
             const newStarOption = document.createElement("option");
             newStarOption.value = star.id
-            if (planet && planet.dataValues.StarId == star.id) newStarOption.selected = true
+            if (idsToSelect.includes(star.id)) newStarOption.selected = true
             newStarOption.innerHTML = star.starName
             starDropdown.appendChild(newStarOption)
         })
     }
 
-    repopulateStars() // Run on load
+    repopulateStars(selectedStarIds) // Run on load
 </script>

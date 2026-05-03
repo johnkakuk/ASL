@@ -2,9 +2,31 @@
 
 {% block main_content %}
     <h1>Welcome to StarTracker, {{ name }}.</h1>
-    <p>
-        <a href="/galaxies">Galaxies</a><br>
-        <a href="/stars">Stars</a><br>
-        <a href="/planets">Planets</a>
-    </p>
+    <h2>Latest Galaxies</h2>
+    <ul>
+        {% for galaxy in galaxies %}
+            <li>
+                <a href="/galaxies/{{ galaxy.id }}">{{ galaxy.galaxyName }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/galaxies">View All</a>
+    <h2>Latest Stars</h2>
+    <ul>
+        {% for star in stars %}
+            <li>
+                <a href="/stars/{{ star.id }}">{{ star.starName }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/stars">View All</a>
+    <h2>Latest Planets</h2>
+    <ul>
+        {% for planet in planets %}
+            <li>
+                <a href="/planets/{{ planet.id }}">{{ planet.planetName }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/planets">View All</a>
 {% endblock %}

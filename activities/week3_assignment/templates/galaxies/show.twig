@@ -11,7 +11,19 @@
         {{ galaxy.galaxyDescription }}
     </p>
 
+    <h2>Stars in {{ galaxy.galaxyName }}</h2>
+    {% if stars|length > 0 %}
+        <ul>
+            {% for star in stars %}
+                <li><a href="/stars/{{ star.id }}">{{ star.starName }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No stars in this galaxy yet. Check back in a few million years.</p>
+    {% endif %}
+    <a class="add-new-link" href="/stars/new">Add new star +</a><br>
+
     <a href="/galaxies/{{ galaxy.id }}/edit">Edit Galaxy</a><br>
     <a href="/galaxies/{{ galaxy.id }}/delete">Delete Galaxy</a><br>
-    <a href="/galaxies">&lt;&lt;Back</a>
+    <a href="/galaxies">&lt;&lt; Back to all galaxies</a>
 {% endblock %}

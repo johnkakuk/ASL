@@ -1,4 +1,4 @@
-const { Galaxy, Star } = require('../models')
+const { Galaxy, Planet, Star } = require('../models')
 
 // Show all resources
 const index = async (req, res) => {
@@ -29,6 +29,7 @@ const show = async (req, res) => {
 
         if (!star) return res.status(404).json({ error: 'Star not found' })
         const galaxy = await Galaxy.findByPk(star.GalaxyId)
+        const planets = await Planet.findAll({ where: { StarId: star.id } })
 
         // Handler for non-browser requests
         if (contentType.indexOf('application/json') >= 0) {
@@ -37,7 +38,7 @@ const show = async (req, res) => {
 
         res
             .status(200)
-            .render('stars/show.twig', { star, galaxy })
+            .render('stars/show.twig', { star, galaxy, planets })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }

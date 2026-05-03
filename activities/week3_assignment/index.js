@@ -20,7 +20,27 @@ app.set('view engine', 'twig')
 
 // Load Sequelize connection
 const { sequelize } = require('./models')
-const { Galaxy } = require('./models')
+const { Galaxy, Star, Planet } = require('./models')
+
+let galaxies = []
+let stars = []
+let planets = []
+
+const dataSetup = async () => {
+    galaxies = await Galaxy.findAll({
+        limit: 3
+    });
+
+    stars = await Star.findAll({
+        limit: 3
+    });
+
+    planets = await Planet.findAll({
+        limit: 3
+    });
+}
+
+dataSetup()
 
 // Load in our RESTful routers
 const routers = require('./routers/index.js')
@@ -33,6 +53,9 @@ app.get('/', async (req, res) => {
         .status(200)
         .render('home/home', {
             name: "John",
+            galaxies: galaxies,
+            stars: stars,
+            planets: planets
         })
 })
 

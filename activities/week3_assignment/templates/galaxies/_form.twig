@@ -17,6 +17,7 @@
         <input
             type="text" 
             name="galaxyName"
+            required
             {% if galaxy is defined %}
                 value="{{ galaxy.galaxyName }}"
             {% endif %}
@@ -28,6 +29,9 @@
         <input
             type="number" 
             name="galaxySize"
+            min="1"
+            step="1"
+            required
             {% if galaxy is defined %}
                 value="{{ galaxy.galaxySize }}"
             {% endif %}
@@ -39,14 +43,12 @@
         <textarea
             name="galaxyDescription"
             rows="4"
-        >
-            {{ galaxy.galaxyDescription }}
-        </textarea>
+        >{{ galaxy.galaxyDescription }}</textarea>
     </div>
 
     <div class="control">
         <label>Image:</label>
-        <input type="file" name="image" id="image" />
+        <input type="file" name="image" id="image" accept="image/*" />
     </div>
 
     <button type="submit">

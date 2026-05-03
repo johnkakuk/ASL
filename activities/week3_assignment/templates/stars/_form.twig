@@ -13,6 +13,7 @@
         <input
             type="text"
             name="starName"
+            required
             {% if star is defined %}
                 value="{{ star.starName }}"
             {% endif %}
@@ -24,6 +25,9 @@
         <input
             type="number"
             name="starSize"
+            min="0.01"
+            step="0.01"
+            required
             {% if star is defined %}
                 value="{{ star.starSize }}"
             {% endif %}
@@ -35,16 +39,16 @@
         <textarea
             name="starDescription"
             rows="4"
-        >
-            {{ star.starDescription }}
-        </textarea>
+        >{{ star.starDescription }}</textarea>
     </div>
 
     <div class="control">
-        <label>Galaxy Id:</label>
+        <label>Galaxy:</label>
         <select
             name="GalaxyId"
-            id="galaxyId">
+            id="galaxyId"
+            required>
+            <option value="" disabled {% if star is not defined %}selected{% endif %}>Select a Parent Galaxy</option>
             {% for galaxy in galaxies %}
                 <option
                     {% if star.GalaxyId == galaxy.id %}
@@ -59,7 +63,7 @@
 
     <div class="control">
         <label>Image:</label>
-        <input type="file" name="image" id="image" />
+        <input type="file" name="image" id="image" accept="image/*" />
     </div>
 
     <button type="submit">
@@ -69,6 +73,8 @@
             Add Star
         {% endif %}
     </button>
-    <br>
-    <a href="/stars">&lt;&lt; Back to Stars</a>
+    {% if star is defined %}
+        <br>
+        <a href="/stars">&lt;&lt; Back to all stars</a>
+    {% endif %}
 </form>
